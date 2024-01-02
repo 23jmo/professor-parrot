@@ -67,8 +67,11 @@ const Header = () => {
                         </ul>
                 </NavigationMenuContent>
             </NavigationMenuItem>
-            <Button variant='btn-primary' className='text-white rounded-xl' asChild>
+            <Button variant='btn-primary' className='text-white rounded-xl hover:bg-green-600' asChild>
                 <Link href="/login">Login</Link>
+            </Button>
+            <Button variant='btn-primary' className="text-gray-700 bg-gray-100 rounded hover:bg-gray-200" asChild>
+                <Link href="/signup">Sign Up</Link>
             </Button>
         </NavigationMenuList>
     </NavigationMenu>
