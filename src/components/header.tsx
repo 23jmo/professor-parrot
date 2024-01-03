@@ -7,9 +7,14 @@ import Logo from '../../public/parrot.png'
 import { NavigationMenu, NavigationMenuContent, NavigationMenuItem, NavigationMenuLink, NavigationMenuList, NavigationMenuTrigger } from './ui/navigation-menu'
 import { cn } from '@/lib/utils'
 import { Button, buttonVariants } from './ui/button'
+import { UserButton, auth} from "@clerk/nextjs"
 
-const Header = () => {
+const Header = async() => {
     const [path, setPath] = useState('/')
+
+    const {userId} = await auth();
+    const isAuth = !!userId;
+
   return <header className='sticky p-2 flex justify-center items-center font-semibold border-b-2 border-slate-200/30'>
     <Link href={'/'} className="w-full flex gap-2 justify-left items-center">
         <Image src={Logo} alt='Parrot Logo' width={25} height={25}/>
@@ -67,12 +72,25 @@ const Header = () => {
                         </ul>
                 </NavigationMenuContent>
             </NavigationMenuItem>
-            <Button variant='btn-primary' className='text-white rounded-xl hover:bg-green-600' asChild>
-                <Link href="/login">Login</Link>
-            </Button>
-            <Button variant='btn-primary' className="text-gray-700 bg-gray-100 rounded hover:bg-gray-200" asChild>
-                <Link href="/signup">Sign Up</Link>
-            </Button>
+            {!isAuth ? (
+                <>
+                <Button variant='btn-primary' className='text-white rounded-xl hover:bg-green-600' asChild>
+                <Link href="/sign-in">Login</Link>
+                </Button>
+                <Button variant='btn-primary' className="text-gray-700 bg-gray-100 rounded hover:bg-gray-200" asChild>
+                <Link href="/sign-up">Sign Up</Link>
+                </Button>
+                </>
+            ): (
+                <>
+                <Button variant='btn-primary' className="text-gray-700 bg-gray-100 rounded hover:bg-gray-200" asChild>
+                <Link href="/profile">Profile</Link>
+                </Button>
+                <li>
+                    <UserButton afterSignOutUrl="/"/>
+                </li>
+                </>
+            )}
         </NavigationMenuList>
     </NavigationMenu>
   </header>
